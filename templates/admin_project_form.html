@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if project %}Edit Project{% else %}Project Baru{% endif %} | {{ profile.nama }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-page {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+        }
+
+        .form-page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .post-form {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .form-group.grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .post-form label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .post-form input,
+        .post-form select,
+        .post-form textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            transition: all var(--transition);
+        }
+
+        .post-form input:focus,
+        .post-form select:focus,
+        .post-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .post-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ─── Custom Cursor ──────────────────────────────────────────────────────── -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+    <div class="form-page">
+        <div class="form-page-header">
+            <a href="{{ url_for('admin_dashboard') }}" style="font-size:0.85rem;color:var(--accent);">← Dashboard</a>
+            <h1 class="form-title">{% if project %}✏️ Edit Project{% else %}✨ Project Baru{% endif %}</h1>
+        </div>
+
+        <form method="POST" class="post-form">
+            <div class="form-group grid-2">
+                <div>
+                    <label>Nama Project</label>
+                    <input type="text" name="nama" value="{% if project %}{{ project.nama }}{% endif %}" required
+                        placeholder="Contoh: Web Scraper Otomatis">
+                </div>
+                <div>
+                    <label>Icon (Emoji)</label>
+                    <input type="text" name="icon" value="{% if project %}{{ project.icon }}{% else %}🔧{% endif %}"
+                        required placeholder="Contoh: 🔧">
+                </div>
+            </div>
+
+            <div class="form-group grid-2">
+                <div>
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="Perencanaan" {% if project and project.status=='Perencanaan' %}selected{% endif
+                            %}>Perencanaan</option>
+                        <option value="Berjalan" {% if project and project.status=='Berjalan' %}selected{% endif %}>
+                            Berjalan</option>
+                        <option value="Selesai" {% if project and project.status=='Selesai' %}selected{% endif %}>
+                            Selesai</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Teknologi (Pisahkan dengan koma)</label>
+                    <input type="text" name="teknologi" value="{% if project %}{{ project.teknologi }}{% endif %}"
+                        required placeholder="Contoh: Python, Flask, SQLite">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Deskripsi Singkat (Muncul di grid home)</label>
+                <textarea name="deskripsi" required
+                    placeholder="Contoh: Scraper otomatis untuk crawling data...">{% if project %}{{ project.deskripsi }}{% endif %}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Detail Lengkap (Muncul di project detail)</label>
+                <textarea name="detail" rows="8" required
+                    placeholder="Deskripsi detail apa masalahnya dan bagaimana project ini menyelesaikannya...">{% if project %}{{ project.detail }}{% endif %}</textarea>
+                <span class="form-hint">Mendukung teks panjang.</span>
+            </div>
+
+            <div class="form-group grid-2">
+                <div>
+                    <label>URL GitHub</label>
+                    <input type="url" name="github" value="{% if project %}{{ project.github }}{% else %}#{% endif %}">
+                    <span class="form-hint">Isi '#' jika private/belum ada</span>
+                </div>
+                <div>
+                    <label>URL Live Demo</label>
+                    <input type="url" name="demo" value="{% if project %}{{ project.demo }}{% else %}#{% endif %}">
+                    <span class="form-hint">Isi '#' jika belum live</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-primary">💾 Simpan Project</button>
+            </div>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>

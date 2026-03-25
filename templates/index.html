@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="{{ profile.nama }} — Python Developer Portfolio. Lihat project dan skill gue di sini.">
+    <title>{{ profile.nama }} | Website Portfolio</title>
+
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="loader" id="loader">
+        <div class="loader-inner">
+            <div class="loader-logo"><span class="logo-bracket">&lt;</span>Dev<span class="logo-bracket">/&gt;</span>
+            </div>
+            <div class="loader-bar">
+                <div class="loader-fill" id="loader-fill"></div>
+            </div>
+            <div class="loader-text" id="loader-text">Memuat portfolio...</div>
+        </div>
+    </div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- ─── Scroll Progress Bar ────────────────── -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- ─── Navbar ───────────────────────── -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>
+                Dev
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#hero" class="nav-link" data-i18n="nav.home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-i18n="nav.about">About</a></li>
+                <li><a href="#skills" class="nav-link" data-i18n="nav.skills">Skills</a></li>
+                <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="{{ url_for('blog') }}" class="nav-link">Blog</a></li>
+                <li><a href="#contact" class="nav-link btn-nav" data-i18n="nav.contact">Contact</a></li>
+            </ul>
+            <button class="lang-toggle" id="lang-toggle" title="Toggle Language">🌐 ID</button>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle tema" title="Ganti Tema">🌙</button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ─── Hero Section ──────────────────────────────────────────────────────── -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <canvas id="particles" style="position:absolute;inset:0;pointer-events:none;z-index:0;"></canvas>
+            <div class="grid-overlay"></div>
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                {{ profile.status }}
+            </div>
+            <h1 class="hero-title">
+                Halo, Gue <span class="highlight">Coder</span><br>
+                <span class="typewriter" id="typewriter"></span>
+            </h1>
+            <p class="hero-subtitle">{{ profile.tagline }}</p>
+            <p class="hero-bio">{{ profile.bio }}</p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary" data-i18n="hero.cta">
+                    <span>Lihat Projects →</span>
+                </a>
+                <a href="#contact" class="btn btn-secondary" data-i18n="hero.contact">Hubungi Gue</a>
+                <a href="{{ profile.github }}" class="btn btn-ghost" target="_blank" data-i18n="hero.cv">↓ Download
+                    CV</a>
+            </div>
+            <div class="hero-socials">
+                <!-- GitHub icon: terminal box with code brackets — drawn from scratch -->
+                <a href="{{ profile.github }}" class="social-link" aria-label="GitHub" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="4" />
+                        <path d="M8 10l-2.5 2 2.5 2" />
+                        <path d="M16 10l2.5 2-2.5 2" />
+                        <line x1="13" y1="8" x2="11" y2="16" />
+                    </svg>
+                </a>
+                <!-- LinkedIn icon: badge with 'in' shape — drawn from scratch -->
+                <a href="{{ profile.linkedin }}" class="social-link" aria-label="LinkedIn" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="2" y="2" width="20" height="20" rx="5" />
+                        <rect x="6.5" y="10.5" width="2" height="7" fill="white" />
+                        <circle cx="7.5" cy="7.5" r="1.4" fill="white" />
+                        <path
+                            d="M11.5 10.5h2v1.2c.6-0.9 1.6-1.4 2.6-1.4 2 0 2.9 1.3 2.9 3.5v3.7h-2v-3.5c0-1-0.4-1.7-1.3-1.7s-1.7.7-1.7 1.9v3.3h-2.5z"
+                            fill="white" />
+                    </svg>
+                </a>
+                <!-- Twitter/X icon: X shape from 4 diagonal lines — drawn from scratch -->
+                <a href="{{ profile.twitter }}" class="social-link" aria-label="Twitter" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 4 L20 20 M20 4 L4 20" stroke="currentColor" stroke-width="2.8"
+                            stroke-linecap="round" fill="none" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="code-card">
+                <div class="code-header">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                    <span class="code-filename">portfolio.py</span>
+                </div>
+                <pre class="code-body"><code><span class="c-keyword">from</span> <span class="c-module">flask</span> <span class="c-keyword">import</span> Flask
+
+<span class="c-def">app</span> = Flask(__name__)
+
+<span class="c-decorator">@app.route</span>(<span class="c-string">'/'</span>)
+<span class="c-keyword">def</span> <span class="c-func">home</span>():
+    <span class="c-keyword">return</span> <span class="c-func">render_template</span>(
+        <span class="c-string">'index.html'</span>,
+        <span class="c-arg">dev</span>=<span class="c-string">"Gue 🚀"</span>,
+        <span class="c-arg">passion</span>=<span class="c-string">"Python"</span>,
+        <span class="c-arg">status</span>=<span class="c-string">"Open"</span>
+    )</code></pre>
+            </div>
+        </div>
+        <a href="#about" class="scroll-indicator" aria-label="Scroll ke bawah">↓</a>
+    </section>
+
+    <!-- ─── About Section ─────────────────────────────────────────────────────── -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">01 &mdash; About</span>
+                <h2 class="section-title">Tentang <span class="highlight">Gue</span></h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-avatar">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-ring"></div>
+                        <div class="avatar-icon">👨‍💻</div>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">{{ my_projects|length }}+</span>
+                            <span class="stat-label">Projects</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">1+</span>
+                            <span class="stat-label">Tahun Belajar</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">∞</span>
+                            <span class="stat-label">Semangat</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p>{{ profile.bio }}</p>
+                    <p>Gue percaya bahwa <strong>kode yang bagus</strong> bukan cuma soal yang jalan, tapi juga soal
+                        yang mudah dibaca, di-maintain, dan dikembangin. Gue selalu coba nulis kode yang bersih dan
+                        terdokumentasi dengan baik.</p>
+                    <p>Saat ini gue fokus memperdalam skill di bidang <strong>backend development</strong> dengan
+                        Python, dan mulai menjelajah dunia <strong>data science</strong>. Open banget buat kolaborasi
+                        dan project baru!</p>
+                    <div class="about-info">
+                        <div class="info-item">📍 <span>{{ profile.lokasi }}</span></div>
+                        <div class="info-item">✉️ <span>{{ profile.email }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Skills Section ────────────────────────────────────────────────────── -->
+    <section class="section section-dark" id="skills">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">02 &mdash; Skills</span>
+                <h2 class="section-title">Teknologi yang <span class="highlight">Gue Pakai</span></h2>
+            </div>
+            <div class="skills-grid">
+                {% for kategori in skills %}
+                <div class="skill-group">
+                    <h3 class="skill-category">{{ kategori.kategori }}</h3>
+                    <div class="skill-items">
+                        {% for skill in kategori.list %}
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">{{ skill.nama }}</span>
+                                <span class="skill-pct">{{ skill.level }}%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" data-width="{{ skill.level }}" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Projects Section ──────────────────────────────────────────────────── -->
+    <section class="section" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">03 &mdash; Projects</span>
+                <h2 class="section-title">Karya yang Pernah <span class="highlight">Gue Buat</span></h2>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="Selesai">✅ Selesai</button>
+                <button class="filter-btn" data-filter="Dalam Pengerjaan">🔧 In Progress</button>
+                <button class="filter-btn" data-filter="Perencanaan">💡 Planned</button>
+            </div>
+
+            <div class="projects-grid" id="projects-grid">
+                {% for project in my_projects %}
+                <div class="project-card" data-status="{{ project.status }}">
+                    <div class="card-top">
+                        <div class="card-icon">{{ project.icon }}</div>
+                        <div class="card-status status-{{ project.status | replace(' ', '-') | lower }}">
+                            {{ project.status }}
+                        </div>
+                    </div>
+                    <h3 class="card-title">{{ project.nama }}</h3>
+                    <p class="card-desc">{{ project.deskripsi }}</p>
+                    <div class="card-tags">
+                        {% for tech in project.teknologi.split(',') %}
+                        <span class="tag" title="{{ tech.strip() }}">{{ tech.strip() }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="card-actions">
+                        <a href="{{ url_for('project_detail', pid=project.id) }}" class="card-btn card-btn-ghost">
+                            📌 Detail
+                        </a>
+                        <a href="{{ project.github }}" class="card-btn card-btn-ghost" target="_blank">
+                            ⌨ GitHub
+                        </a>
+                        <a href="{{ project.demo }}" class="card-btn card-btn-primary" target="_blank">
+                            ↗ Demo
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── GitHub Repos Section ────────────────── -->
+    <section class="section section-dark" id="github-repos">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">05 &mdash; GitHub</span>
+                <h2 class="section-title">Repository <span class="highlight">Publik</span></h2>
+            </div>
+            <div class="repos-grid" id="repos-grid">
+                <div style="text-align:center;padding:2rem;color:var(--text-muted);" id="repos-loading">
+                    ⏳ Memuat repo dari GitHub...
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:1.5rem;">
+                <a href="{{ profile.github }}" target="_blank" class="btn btn-secondary">Lihat Semua Repo →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Contact Section ────────────────── -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">04 &mdash; Contact</span>
+                <h2 class="section-title">Yuk, <span class="highlight">Ngobrol!</span></h2>
+            </div>
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <p class="contact-intro">Punya project seru? Mau kolaborasi? Atau sekadar mau say hi? Gue open
+                        banget buat ngobrol. Drop pesan lo dan gue bakal bales secepetnya!</p>
+                    <div class="contact-links">
+                        <a href="mailto:{{ profile.email }}" class="contact-link">
+                            <div class="contact-link-icon">📧</div>
+                            <div class="contact-link-info">
+                                <div class="contact-link-label">Email</div>
+                                <div class="contact-link-value">{{ profile.email }}</div>
+                            </div>
+                            <button class="copy-btn" id="copy-email-btn" data-email="{{ profile.email }}"
+                                title="Salin email" aria-label="Salin email">⎘</button>
+                        </a>
+                        <div class="toast" id="toast">📋 Email tersalin!</div>
+                        <a href="{{ profile.github }}" class="contact-link" target="_blank">
+                            <div class="contact-link-icon">💻</div>
+                            <div>
+                                <div class="contact-link-label">GitHub</div>
+                                <div class="contact-link-value">Lihat Kode Gue</div>
+                            </div>
+                        </a>
+                        <a href="{{ profile.linkedin }}" class="contact-link" target="_blank">
+                            <div class="contact-link-icon">🤝</div>
+                            <div>
+                                <div class="contact-link-label">LinkedIn</div>
+                                <div class="contact-link-value">Connect Yuk!</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input type="text" id="name" placeholder="Nama lo..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email-input">Email</label>
+                        <input type="email" id="email-input" placeholder="email@contoh.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Pesan</label>
+                        <textarea id="message" rows="4" placeholder="Ceritain project atau idenya..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="submit-btn">
+                        <span>Kirim Pesan 🚀</span>
+                    </button>
+                    <div class="form-success" id="form-success">
+                        ✅ Pesan terkirim! Gue bakal bales segera.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Footer ────────────────────────────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-bracket">&lt;</span>Dev<span class="logo-bracket">/&gt;</span>
+                </div>
+                <p class="footer-text">Dibuat dengan <span class="heart">❤️</span> pakai Python & Flask</p>
+                <div class="footer-socials">
+                    <!-- GitHub footer icon -->
+                    <a href="{{ profile.github }}" class="social-link" target="_blank" aria-label="GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="4" />
+                            <path d="M8 10l-2.5 2 2.5 2" />
+                            <path d="M16 10l2.5 2-2.5 2" />
+                            <line x1="13" y1="8" x2="11" y2="16" />
+                        </svg>
+                    </a>
+                    <!-- LinkedIn footer icon -->
+                    <a href="{{ profile.linkedin }}" class="social-link" target="_blank" aria-label="LinkedIn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                            <rect x="6.5" y="10.5" width="2" height="7" fill="white" />
+                            <circle cx="7.5" cy="7.5" r="1.4" fill="white" />
+                            <path
+                                d="M11.5 10.5h2v1.2c.6-0.9 1.6-1.4 2.6-1.4 2 0 2.9 1.3 2.9 3.5v3.7h-2v-3.5c0-1-0.4-1.7-1.3-1.7s-1.7.7-1.7 1.9v3.3h-2.5z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Achmad Fauzan Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ─── Back to Top Button ────────────────────────────────────────────────── -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+    <!-- ─── JavaScript ────────────────────────────────────────────────────────── -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>

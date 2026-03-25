@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.nama }} | {{ profile.nama }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .detail-hero {
+            padding: 8rem 0 4rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-breadcrumb a {
+            color: var(--accent);
+            transition: color var(--transition);
+        }
+
+        .detail-breadcrumb a:hover {
+            color: var(--accent-light);
+        }
+
+        .detail-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .detail-status-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .detail-body {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            padding: 4rem 0;
+            align-items: start;
+        }
+
+        .detail-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            margin-bottom: 2rem;
+        }
+
+        .detail-desc p {
+            margin-bottom: 1rem;
+        }
+
+        .detail-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            position: sticky;
+            top: 6rem;
+        }
+
+        .detail-sidebar h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-family: var(--font-code);
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-sidebar-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .related-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: all var(--transition);
+            text-decoration: none;
+            display: block;
+        }
+
+        .related-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+        }
+
+        .related-card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+        }
+
+        .related-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .detail-body {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ─── Custom Cursor ──────────────────────────────────────────────────────── -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>Dev<span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="{{ url_for('home') }}" class="nav-link">Home</a></li>
+                <li><a href="{{ url_for('home') }}#projects" class="nav-link">Projects</a></li>
+                <li><a href="{{ url_for('blog') }}" class="nav-link">Blog</a></li>
+                <li><a href="{{ url_for('home') }}#contact" class="nav-link btn-nav">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" id="theme-toggle" title="Ganti Tema">🌙</button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="detail-hero">
+        <div class="container">
+            <div class="detail-breadcrumb">
+                <a href="{{ url_for('home') }}">Home</a> /
+                <a href="{{ url_for('home') }}#projects">Projects</a> /
+                <span>{{ project.nama }}</span>
+            </div>
+            <div class="detail-icon">{{ project.icon }}</div>
+            <h1 class="detail-title">{{ project.nama }}</h1>
+            <div class="detail-status-row">
+                <div class="card-status status-{{ project.status | replace(' ', '-') | lower }}">
+                    {{ project.status }}
+                </div>
+            </div>
+            <div class="detail-tags">
+                {% for tech in project.teknologi.split(',') %}
+                <span class="tag">{{ tech.strip() }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="detail-body">
+            <div class="detail-main">
+                <p class="detail-desc">{{ project.deskripsi }}</p>
+                <p class="detail-desc">{{ project.detail }}</p>
+
+                <h2 class="section-title" style="font-size:1.4rem; margin-bottom:1rem;">
+                    Tech <span class="highlight">Stack</span>
+                </h2>
+                <div class="detail-tags" style="margin-bottom:2rem;">
+                    {% for tech in project.teknologi.split(',') %}
+                    <span class="tag" style="padding:0.4rem 1rem; font-size:0.85rem;">{{ tech.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <aside class="detail-sidebar">
+                <h3>Links</h3>
+                <div class="detail-sidebar-links">
+                    <a href="{{ project.github }}" target="_blank" class="btn btn-secondary"
+                        style="justify-content:center;">
+                        ⌨ Lihat di GitHub
+                    </a>
+                    <a href="{{ project.demo }}" target="_blank" class="btn btn-primary"
+                        style="justify-content:center;">
+                        ↗ Live Demo
+                    </a>
+                    <a href="{{ url_for('home') }}#contact" class="btn btn-secondary" style="justify-content:center;">
+                        💬 Diskusi Project
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    {% if related %}
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header" style="text-align:left; margin-bottom:1.5rem;">
+                <h2 class="section-title" style="font-size:1.4rem;">Project <span class="highlight">Terkait</span></h2>
+            </div>
+            <div class="related-grid">
+                {% for p in related %}
+                <a href="{{ url_for('project_detail', pid=p.id) }}" class="related-card">
+                    <div class="related-card-icon">{{ p.icon }}</div>
+                    <div class="related-card-title">{{ p.nama }}</div>
+                    <div class="related-card-desc">{{ p.deskripsi[:80] }}...</div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 {{ profile.nama }} — <a href="{{ url_for('home') }}" style="color:var(--accent);">Balik ke
+                        Home</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>

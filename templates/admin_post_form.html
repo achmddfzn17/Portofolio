@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if post %}Edit Post{% else %}Post Baru{% endif %} | Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-page {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .form-page-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-page-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        textarea#konten {
+            min-height: 320px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ─── Custom Cursor ──────────────────────────────────────────────────────── -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+    <div class="form-page">
+        <div class="form-page-header">
+            <a href="{{ url_for('admin_dashboard') }}" style="font-size:0.85rem;color:var(--accent);">← Dashboard</a>
+            <h1 class="form-page-title">{% if post %}✏️ Edit Post{% else %}✨ Post Baru{% endif %}</h1>
+        </div>
+
+        <form method="POST">
+            <div class="form-card">
+                <div class="form-row">
+                    <div class="form-group form-full">
+                        <label for="judul">Judul Post</label>
+                        <input type="text" id="judul" name="judul" value="{% if post %}{{ post.judul }}{% endif %}"
+                            placeholder="Tuliskan judul yang menarik..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="slug">Slug (URL)</label>
+                        <input type="text" id="slug" name="slug" value="{% if post %}{{ post.slug }}{% endif %}"
+                            placeholder="judul-artikel-lo" required>
+                        <div class="form-hint">Contoh: belajar-flask-pemula</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" id="tanggal" name="tanggal"
+                            value="{% if post %}{{ post.tanggal }}{% endif %}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags</label>
+                        <input type="text" id="tags" name="tags" value="{% if post %}{{ post.tags }}{% endif %}"
+                            placeholder="Python,Flask,Tutorial">
+                        <div class="form-hint">Pisahkan dengan koma</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status"
+                            style="background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);padding:0.75rem 1rem;border-radius:8px;outline:none;width:100%;">
+                            <option value="publish" {% if not post or post.status=='publish' %}selected{% endif %}>✅
+                                Publish</option>
+                            <option value="draft" {% if post and post.status=='draft' %}selected{% endif %}>📝 Draft
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full">
+                        <label for="excerpt">Excerpt (Ringkasan)</label>
+                        <input type="text" id="excerpt" name="excerpt"
+                            value="{% if post %}{{ post.excerpt }}{% endif %}"
+                            placeholder="Ringkasan singkat artikel...">
+                    </div>
+                    <div class="form-group form-full">
+                        <label for="konten">Konten (HTML diizinkan)</label>
+                        <textarea id="konten" name="konten"
+                            required>{% if post %}{{ post.konten }}{% endif %}</textarea>
+                        <div class="form-hint">Gunakan tag HTML: &lt;p&gt;, &lt;h2&gt;, &lt;pre&gt;&lt;code&gt;,
+                            &lt;strong&gt;, &lt;a&gt;</div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">
+                        {% if post %}💾 Simpan Perubahan{% else %}🚀 Publish Post{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Auto-generate slug from title only for new posts
+        const isEditMode = document.getElementById('slug').value.trim() !== '';
+        const judulEl = document.getElementById('judul');
+        const slugEl = document.getElementById('slug');
+        judulEl.addEventListener('input', function () {
+            if (!isEditMode) {
+                slugEl.value = judulEl.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-');
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>
