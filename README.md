@@ -162,7 +162,7 @@ Project ini bebas digunakan dan dimodifikasi sesuai kebutuhan. Dibuat sendiri da
 ### 📞 Kontak
 Jika ada pertanyaan atau ingin berdiskusi, silakan hubungi saya melalui:
 - **GitHub**: [@Achmddfzn](https://github.com/Achmddfzn)
-- **Discord**: `username_discord_kamu` *(silakan ubah dengan username Discord asli kamu)*
+- **Discord**: `henka#2552` *(silakan ubah dengan username Discord asli kamu)*
 
 ---
 
