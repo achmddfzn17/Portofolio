@@ -157,7 +157,11 @@ requests>=2.0.0  # Untuk integrasi GitHub API
 
 ## 📄 Lisensi
 
-Project ini bebas digunakan dan dimodifikasi sesuai kebutuhan. Dibuat sendiri dari nol — **no external template, no copyright issues**.
+**Personal License (Lisensi Pribadi)**
+
+Hak Cipta © 2026 Achmad Fauzan. Proyek ini dikembangkan dari nol sebagai bagian dari portofolio pribadi.
+
+Anda diperbolehkan untuk melihat dan mempelajari kode sumber proyek ini. Namun, Anda **tidak diperkenankan** untuk menyalin, mendistribusikan ulang, mencetak ulang, atau menggunakan rekam jejak kode maupun desain visual proyek ini untuk tujuan komersial atau diklaim sebagai portofolio pribadi Saya tanpa seizin dari pembuat.
 
 ### 📞 Kontak
 Jika ada pertanyaan atau ingin berdiskusi, silakan hubungi saya melalui:
