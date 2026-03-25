@@ -159,8 +159,13 @@ requests>=2.0.0  # Untuk integrasi GitHub API
 
 Project ini bebas digunakan dan dimodifikasi sesuai kebutuhan. Dibuat sendiri dari nol — **no external template, no copyright issues**.
 
+### 📞 Kontak
+Jika ada pertanyaan atau ingin berdiskusi, silakan hubungi saya melalui:
+- **GitHub**: [@Achmddfzn](https://github.com/Achmddfzn)
+- **Discord**: `username_discord_kamu` *(silakan ubah dengan username Discord asli kamu)*
+
 ---
 
 <p align="center">
-  Dibuat dengan ❤️ pakai Python & Flask &nbsp;|&nbsp; 2026
+  Dibuat dengan ❤️ oleh <a href="https://github.com/Achmddfzn">Achmad Fauzan</a> pakai Python & Flask &nbsp;|&nbsp; 2026
 </p>
